@@ -8,16 +8,10 @@ k_pcm = 2.3 # W/m.K
 
 cp_cool = 3.55 # J/g.K
 density_coolant = 1055 # kg/m^3
-# temp_inlet_coolant = 
 
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Constants (example values - adjust as needed)
-# cp_cool = 4.18  # Specific heat of coolant [kJ/kg·K] (water)
-#  = 80  # Maximum PCM temperature [°C]
-
 
 Q_gen_range = np.linspace(10, 50, 100)  # Heat generation range [W]
 T_in_range = np.linspace(27, 31, 100)  # Inlet temperature range [°C]
@@ -26,7 +20,7 @@ T_in_range = np.linspace(27, 31, 100)  # Inlet temperature range [°C]
 def calculate_m_dot(Q_gen, T_in):
     return Q_gen / (cp_cool * (T_pcm_max - T_in))
 
-# Create grids for plotting
+# Grids for plotting
 Q_gen_grid, T_in_grid = np.meshgrid(Q_gen_range, T_in_range)
 m_dot_grid = calculate_m_dot(Q_gen_grid, T_in_grid)
 
@@ -72,16 +66,16 @@ from mpl_toolkits.mplot3d import Axes3D
 
 mask = m_dot_grid > 0  # Boolean mask for valid regions
 
-# Apply the mask to all grids
-Q_gen_valid = np.where(mask, Q_gen_grid, np.nan)  # Replace invalid with NaN
+# Masking all grids
+Q_gen_valid = np.where(mask, Q_gen_grid, np.nan)  # Replacing invalid with NaN
 T_in_valid = np.where(mask, T_in_grid, np.nan)
 m_dot_valid = np.where(mask, m_dot_grid, np.nan)
 
-# --- Create 3D Plot ---
+# --- Creating 3D Plot ---
 fig = plt.figure(figsize=(10, 7))
 ax = fig.add_subplot(111, projection='3d')
 
-# Plot only valid points (NaN values are skipped)
+# Plotting only valid points (NaN values are skipped)
 surf = ax.plot_surface(
     Q_gen_valid, T_in_valid, m_dot_valid,
     cmap='viridis', edgecolor='none', alpha=0.8
@@ -96,7 +90,7 @@ ax.set_title('3D Plot: Valid Regions ($\dot{m} > 0$)', fontsize=14)
 # Colorbar
 fig.colorbar(surf, ax=ax, shrink=0.5, aspect=10, label='$\dot{m}$ (kg/s)')
 
-# Adjust view angle
+# Adjusting view angle
 ax.view_init(elev=25, azim=45)
 
 plt.tight_layout()
